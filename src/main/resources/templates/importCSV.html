@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anomaly detector</title>
+    <link rel="stylesheet" href="/importForm.css">
+</head>
+<body>
+<form method="POST" th:action="@{/csv}" enctype="multipart/form-data">
+    <div class="form">
+        <label for="file">1. Select a CSV file:</label>
+        <input type="file" name="file" id="file" accept=".csv" placeholder="Select a CSV file">
+    </div>
+    <div class="form">
+        <button type="submit">Import</button>
+    </div>
+</form>
+</body>
+</html>

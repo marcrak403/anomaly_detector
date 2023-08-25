@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/charts.css">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/boost.js"></script>
+</head>
+<body>
+<script type="text/javascript" th:inline="javascript">
+    var xHeader = [[${xHeader}]];
+    var yHeaders = [[${yHeaders}]];
+
+    var garray = [[${good}]];
+    var barray = [[${bad}]];
+
+    for (let i = 0; i < yHeaders.length; i++) {
+        var igarray = garray.at(i);
+        var ibarray = barray.at(i);
+        var yHeader = yHeaders.at(i);
+        var chartdiv = document.createElement("div");
+        chartdiv.id = "chart-" + i;
+        chartdiv.className = "chart-container";
+        document.body.appendChild(chartdiv);
+        let chart = Highcharts.chart(chartdiv, {
+            chart: {
+                type: 'scatter',
+                height: (9 / 16 * 75) + '%',
+                zoomType: 'x',
+                panning: true,
+                panKey: 'shift',
+            },
+            boost: {
+                enabled: true,
+                blending: false,
+            },
+            xAxis: {
+                title: {
+                    text: xHeader
+                },
+                events: {
+                    afterSetExtremes: function (event) {
+                        // Loop through all charts and update their x-axis range
+                        for (let j = 0; j < Highcharts.charts.length; j++) {
+                            if (Highcharts.charts[j] !== this) {
+                                Highcharts.charts[j].xAxis[0].setExtremes(event.min, event.max);
+                            }
+                        }
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: yHeader
+                }
+            },
+            series: [{
+                name: "normal",
+                keys: ['x', 'y'],
+                data: igarray,
+                marker: {
+                    radius: 2
+                }
+            }, {
+                name: "anomaly",
+                keys: ['x', 'y'],
+                data: ibarray,
+                marker: {
+                    radius: 2
+                },
+                color: '#ff0000'
+            }]
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/selectForm.css">
+</head>
+<body>
+<form method="post" th:action="@{/selected}" th:object="${headers}">
+    <div class="form-group">
+        <label for="headers">2. Select one or more headers:</label>
+        <select name="headers" id="headers" th:multiple="multiple" placeholder="Select one or more headers">
+            <option th:each="header, index : ${headers}"
+                    th:if="${index.count} &gt; 1"
+                    th:value="${index.index}"
+                    th:text="${header}">
+            </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit">Submit</button>
+    </div>
+    <div th:if="${headersRead}" class="alert alert-success fade show" id="success-message"></div>
+    <script th:if="${headersRead}" type="text/javascript">
+        document.getElementById("success-message").innerHTML = "Headers successfully read and stored!";
+    </script>
+</form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/selectForm.css">
+</head>
+<body>
+<form method="post" th:action="@{/anomaly}" th:object="${methods}">
+    <div class="form-group">
+        <label for="algorithm">3. Select algorithm:</label>
+        <select name="algorithm" id="algorithm" placeholder="Select an algorithm">
+            <option th:each="method, index : ${methods}"
+                    th:value="${method}"
+                    th:text="${method}">
+            </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit">Analyse</button>
+    </div>
+</form>
+</body>
+</html>
